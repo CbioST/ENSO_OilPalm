@@ -5,7 +5,7 @@ This script refers to equation 1 in the manuscript
 ## haze: Sept 13 - Nov 12, post-haze: Nov 13 - Dec 31
 ## Year	Month	Day
 
-dat <- read.csv("FINAL_PTPN_Daily_values2014_2016_ParametersFINAL.csv", stringsAsFactors = FALSE)
+dat <- read.csv("Meteo_FluxData_ENSO_24hour.csv", stringsAsFactors = FALSE)
 dat1 <- subset(dat,(!is.na(dat$NEE)))
 dat <- dat1
 
