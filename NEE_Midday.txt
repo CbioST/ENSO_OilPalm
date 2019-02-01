@@ -1,0 +1,137 @@
+## DESCRIPTION:
+This script refers to equation 2 in the manuscript
+
+## Year 2015 ENSO: pre-drought: Jan 1 - May 8, drought: May 9 - Sept 12, 
+## haze: Sept 13 - Nov 12, post-haze: Nov 13 - Dec 31
+## Year	Month	Day
+
+dat <- read.csv("FINAL_PTPN_Daily_values2014_2016_V2MIDDAY.csv", stringsAsFactors = FALSE)
+dat1 <- subset(dat,(!is.na(dat$NEE)))
+dat <- dat1
+
+dat$Date2 <- as.Date(as.character(dat$Date), "%d/%m/%Y") ## converts Date to format like "2016-07-25"
+
+pre_drought_non_enzo <- subset(dat, Date2 >= as.Date("2014-03-3") & Date2 <= as.Date("2014-05-29"))
+drought_non_enzo <- subset(dat, Date2 >= as.Date("2014-05-30") & Date2 <= as.Date("2014-09-12"))
+haze_non_enzo <- subset(dat, Date2 >= as.Date("2014-09-13") & Date2 <= as.Date("2014-11-12"))
+post_haze_non_enzo <- subset(dat, Date2 >= as.Date("2014-11-13") & Date2 <= as.Date("2014-12-31"))
+pre_drought_pre_enzo <- subset(dat, Date2 >= as.Date("2015-01-1") & Date2 <= as.Date("2015-05-8"))
+drought_enzo <- subset(dat, Date2 >= as.Date("2015-05-9") & Date2 <= as.Date("2015-09-12"))
+haze_enzo <- subset(dat, Date2 >= as.Date("2015-09-13") & Date2 <= as.Date("2015-11-12"))
+post_haze_enzo <- subset(dat, Date2 >= as.Date("2015-11-13") & Date2 <= as.Date("2015-12-31"))
+post_drought_post_enzo <- subset(dat, Date2 >= as.Date("2016-01-1") & Date2 <= as.Date("2016-05-8"))
+drought_post_enzo <- subset(dat, Date2 >= as.Date("2016-05-9") & Date2 <= as.Date("2016-07-29"))
+
+Precip<-dat$AccumulatedPrecipitation_mm
+Rad<-dat$GlobalRadiation_22m_Wm2
+Tair<-dat$AirTemperature_22m_degC
+Daylen<-dat$SunshineDuration_minutes_per_12hours
+VPD <- dat$VPD_22m_hPa
+wind <- dat$WindSpeed_22m_ms
+RH <- dat$AirHumidity_22m_percent
+Tsoil <- dat$SoilTemperature_30cm_degC
+SoilMoist <- dat$SoilMoisture_30cm_percent
+CO2 <- dat$CO2_concentration
+PARin <- dat$PAR_incoming_22m_umol_m2_s1
+fdifRad <- dat$Fraction_of_DiffuseRadiation
+difRad <- dat$DiffuseRadiation_22m_Wm2
+NEE <- dat$NEE_umol_m2_s1
+ET <- dat$ET_ET_pot
+
+
+lmout <- lm(NEE ~ PARin + Tair + VPD + CO2 +fdifRad +ET -1)
+summary(lmout)
+
+data1 <- cbind(PARin,Tair,VPD,CO2,fdifRad,ET)
+data2 <- data1[complete.cases(data1),] 
+par <- data2[,1]; tair <- data2[,2]; vpd <- data2[,3];
+co2 <- data2[,4]; fracdifrad <- data2[,5]; et <- data2[,6];
+x <- cbind(par,tair,vpd,co2,fracdifrad,et)
+cor(x)
+
+mean(PARin,na.rm=T)
+mean(Tair,na.rm=T)
+mean(VPD,na.rm=T)
+mean(CO2,na.rm=T)
+mean(fdifRad,na.rm=T)
+mean(ET,na.rm=T)
+mean(NEE,na.rm=T)
+
+##### mean_haze_predictors
+dat <- haze_enzo
+
+Tair<-dat$AirTemperature_22m_degC
+VPD <- dat$VPD_22m_hPa
+CO2 <- dat$CO2_concentration
+PARin <- dat$PAR_incoming_22m_umol_m2_s1
+fdifRad <- dat$Fraction_of_DiffuseRadiation
+NEE <- dat$NEE_umol_m2_s1
+ET <- dat$ET_ET_pot
+
+mean(PARin,na.rm=T)
+mean(Tair,na.rm=T)
+mean(VPD,na.rm=T)
+mean(CO2,na.rm=T)
+mean(fdifRad,na.rm=T)
+mean(NEE,na.rm=T)
+mean(ET,na.rm=T)
+
+##### mean_drought_predictors
+dat <- drought_enzo
+
+Tair<-dat$AirTemperature_22m_degC
+VPD <- dat$VPD_22m_hPa
+CO2 <- dat$CO2_concentration
+PARin <- dat$PAR_incoming_22m_umol_m2_s1
+fdifRad <- dat$Fraction_of_DiffuseRadiation
+NEE <- dat$NEE_umol_m2_s1
+ET <- dat$ET_ET_pot
+
+mean(PARin,na.rm=T)
+mean(Tair,na.rm=T)
+mean(VPD,na.rm=T)
+mean(CO2,na.rm=T)
+mean(fdifRad,na.rm=T)
+mean(NEE,na.rm=T)
+mean(ET,na.rm=T)
+
+##### mean_nondrought_nonhaze_predictors
+dat <- read.csv("FINAL_PTPN_Daily_values2014_2016_V2MIDDAY.csv", stringsAsFactors = FALSE)
+dat1 <- subset(dat,(!is.na(dat$NEE)))
+dat <- dat1
+
+dat$Date2 <- as.Date(as.character(dat$Date), "%d/%m/%Y") ## converts Date to format like "2016-07-25"
+
+pre_drought_non_enzo <- subset(dat, Date2 >= as.Date("2014-03-3") & Date2 <= as.Date("2014-05-29"))
+drought_non_enzo <- subset(dat, Date2 >= as.Date("2014-05-30") & Date2 <= as.Date("2014-09-12"))
+haze_non_enzo <- subset(dat, Date2 >= as.Date("2014-09-13") & Date2 <= as.Date("2014-11-12"))
+post_haze_non_enzo <- subset(dat, Date2 >= as.Date("2014-11-13") & Date2 <= as.Date("2014-12-31"))
+pre_drought_pre_enzo <- subset(dat, Date2 >= as.Date("2015-01-1") & Date2 <= as.Date("2015-05-8"))
+drought_enzo <- subset(dat, Date2 >= as.Date("2015-05-9") & Date2 <= as.Date("2015-09-12"))
+haze_enzo <- subset(dat, Date2 >= as.Date("2015-09-13") & Date2 <= as.Date("2015-11-12"))
+post_haze_enzo <- subset(dat, Date2 >= as.Date("2015-11-13") & Date2 <= as.Date("2015-12-31"))
+post_drought_post_enzo <- subset(dat, Date2 >= as.Date("2016-01-1") & Date2 <= as.Date("2016-05-8"))
+drought_post_enzo <- subset(dat, Date2 >= as.Date("2016-05-9") & Date2 <= as.Date("2016-07-29"))
+
+dat2 <- subset(dat,season!="drought_enzo" & season!="haze_enzo")
+dat <- dat2
+
+Tair<-dat$AirTemperature_22m_degC
+VPD <- dat$VPD_22m_hPa
+CO2 <- dat$CO2_concentration
+PARin <- dat$PAR_incoming_22m_umol_m2_s1
+fdifRad <- dat$Fraction_of_DiffuseRadiation
+NEE <- dat$NEE_umol_m2_s1
+ET <- dat$ET_ET_pot
+
+
+mean(PARin,na.rm=T)
+mean(Tair,na.rm=T)
+mean(VPD,na.rm=T)
+mean(CO2,na.rm=T)
+mean(fdifRad,na.rm=T)
+mean(NEE,na.rm=T)
+mean(ET,na.rm=T)
+
+
+
